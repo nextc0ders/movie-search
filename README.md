@@ -23,7 +23,7 @@
 
 1. **Клонируйте репозиторий:**
 	```bash
-		git clone [https://github.com/nextc0ders/movie-search.git](https://github.com/nextc0ders/movie-search.git)
+		git clone https://github.com/nextc0ders/movie-search.git
 	```
 2. **Установите зависимости:**
 	```bash
