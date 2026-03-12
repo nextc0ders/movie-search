@@ -1,16 +1,52 @@
-# React + Vite
+# 🎬 Movie Search App — React + TMDB API
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Стильное веб-приложение для поиска фильмов, созданное на **React** с использованием **Vite**. Проект реализован в рамках учебного курса по веб-разработке.
 
-Currently, two official plugins are available:
+![Screen Shot](screenshots/preview.png)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Основные возможности
 
-## React Compiler
+* **Живой поиск:** Поиск фильмов по базе TMDB в реальном времени.
+* **Debouncing:** Оптимизация поисковых запросов (задержка перед отправкой), чтобы не перегружать API.
+* **Пагинация:** Удобный переход по страницам результатов.
+* **Glassmorphism Design:** Современный интерфейс с эффектом «стекла», адаптивной сеткой (CSS Grid) и темной темой.
+* **Environment Variables:** Надежное хранение API-ключей в `.env` файлах.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 Технологический стек
 
-## Expanding the ESLint configuration
+* **Frontend:** React (Hooks: `useState`, `useEffect`)
+* **Сборка:** Vite
+* **Стили:** CSS3 (Grid, Flexbox, Glassmorphism)
+* **API:** [The Movie Database (TMDB)](https://www.themoviedb.org/)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 📦 Как запустить проект
+
+1. **Клонируйте репозиторий:**
+	```bash
+		git clone [https://github.com/твой-аккаунт/movie-search-app.git](https://github.com/твой-аккаунт/movie-search-app.git)
+	```
+2. **Установите зависимости:**
+	```bash
+		npm install
+	```
+3. Настройте API Key:
+Создайте файл .env в корне проекта и добавьте туда свой ключ:
+	```bash
+		VITE_TMDB_API_KEY=твой_ключ_от_tmdb
+	```
+4. Запустите проект:
+	```bash
+		npm run dev
+	```
+
+## 📚 Что ты изучишь в этом проекте (Learning Goals)
+1. Работа с асинхронными запросами (fetch) и обработка данных от сторонних сервисов.
+2. Создание кастомной логики для Debouncing (оптимизация производительности).
+3. Продвинутая верстка на CSS Grid без использования сторонних библиотек.
+4. Управление сложным состоянием (синхронизация поиска и пагинации).
+---
+Создано с ❤️ в учебных целях.
+---
+### P.S.
+
+* **`.gitignore`**: Обязательно проверь, чтобы твой файл `.env` был прописан в `.gitignore`. Ключ TMDB **не должен** попасть в репозиторий!
