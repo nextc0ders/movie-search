@@ -40,6 +40,9 @@ function App() {
 		<div className="app-container">
 
 			<header>
+				{/* TODO
+					нужно сгенерировать логотип и сделать роутинг на главную страницу
+				*/}
 				<h1 className="title">Movie Search</h1>
 			</header>
 
