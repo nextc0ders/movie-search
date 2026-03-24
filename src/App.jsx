@@ -3,12 +3,49 @@ import './App.css';
 
 const IMG_URL = 'https://image.tmdb.org/t/p/w500/';
 
+function MovieDetails({ id, contentType, API_KEY, onClose }) {
+	const [data, setData] = useState(null);
+
+	useEffect(() => {
+		const url = `https://api.themoviedb.org/3/${contentType}/${id}?api_key=${API_KEY}&language=ru-RU`;
+
+		fetch(url)
+			.then(res => res.json())
+			.then(json => setData(json))
+			.catch(err => console.error(err));
+	}, [id, contentType, API_KEY]);
+
+	if (!data) return <div className="loader">Загрузка...</div>;
+
+	return (
+		<>
+			<button className="close-btn" onClick={onClose}>✕</button>
+			<div className="modal-body">
+				<img
+					src={data.poster_path ? `https://image.tmdb.org/t/p/w500${data.poster_path}` : `https://placehold.co/300x450`}
+					alt={data.title || data.name}
+				/>
+				<div className="modal-info">
+					<h2>{data.title || data.name}</h2>
+					<p className="tagline"><i>{data.tagline}</i></p>
+					<p className="overview">{data.overview}</p>
+					<div className="meta">
+						<span>⭐ {data.vote_average?.toFixed(1)}</span>
+						<span>📅 {data.release_date || data.first_air_date}</span>
+					</div>
+				</div>
+			</div>
+		</>
+	)
+}
+
 function App() {
 	const [page, setPage] = useState(1);
 	const [movie, setMovie] = useState([]);
 	const [query, setQuery] = useState('');
 	const [debouncedQuery, setDebouncedQuery] = useState('');
 	const [contentType, setContentType] = useState('movie');
+	const [selectedMovieId, setSelectedMovieId] = useState(null);
 
 	const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -97,7 +134,11 @@ function App() {
 				/>
 				<ul className="movie-list">
 					{movie.map((m) => (
-						<li key={m.id} className="movie-item">
+						<li
+							key={m.id}
+							className="movie-item"
+							onClick={() => setSelectedMovieId(m.id)}
+						>
 							<h3>{m.title || m.name}</h3>
 							<img
 								src={m.poster_path ? IMG_URL + m.poster_path : "https://placehold.co/200x300"}
@@ -125,6 +166,22 @@ function App() {
 				</div>
 
 			</div>
+
+
+			{selectedMovieId && (
+				<div className="modal-overlay" onClick={() => setSelectedMovieId(null)}>
+					<div className="modal-content" onClick={(e) => e.stopPropagation()}>
+
+						<MovieDetails
+							id={selectedMovieId}
+							contentType={contentType}
+							API_KEY={API_KEY}
+							onClose={() => setSelectedMovieId(null)}
+						/>
+					</div>
+				</div>
+			)}
+
 		</>
 	)
 }
