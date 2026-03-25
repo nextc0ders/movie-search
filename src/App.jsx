@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import './App.css';
 
 const IMG_URL = 'https://image.tmdb.org/t/p/w500/';
@@ -40,6 +40,7 @@ function MovieDetails({ id, contentType, API_KEY, onClose }) {
 }
 
 function App() {
+	const inputRef = useRef(null);
 	const [page, setPage] = useState(1);
 	const [movie, setMovie] = useState([]);
 	const [query, setQuery] = useState('');
@@ -125,13 +126,27 @@ function App() {
 				{/* TODO
 					нужно сделать очистку поиска
 				*/}
-				<input
-					type="text"
-					className="search-input"
-					placeholder="Поиск фильмов..."
-					value={query}
-					onChange={(e) => setQuery(e.target.value)}
-				/>
+				<div className="search-container">
+					<input
+						ref={inputRef}
+						type="text"
+						className="search-input"
+						placeholder="Поиск фильмов..."
+						value={query}
+						onChange={(e) => setQuery(e.target.value)}
+					/>
+					{query && (
+						<button
+							className='clear-btn'
+							onClick={() => {
+								setQuery('');
+								inputRef.current.focus();
+							}}
+						>
+							✕
+						</button>
+					)}
+				</div>
 				<ul className="movie-list">
 					{movie.map((m) => (
 						<li
