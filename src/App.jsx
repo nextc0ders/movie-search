@@ -3,6 +3,13 @@ import './App.css';
 
 const IMG_URL = 'https://image.tmdb.org/t/p/w500/';
 
+const SkeletonCard = () => (
+	<div className="movie-item skeleton">
+		<div className="skeleton-text"></div>
+		<div className="skeleton-img"></div>
+	</div>
+);
+
 function MovieDetails({ id, contentType, API_KEY, onClose }) {
 	const [data, setData] = useState(null);
 
@@ -47,6 +54,7 @@ function App() {
 	const [debouncedQuery, setDebouncedQuery] = useState('');
 	const [contentType, setContentType] = useState('movie');
 	const [selectedMovieId, setSelectedMovieId] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 
@@ -61,6 +69,8 @@ function App() {
 
 
 	useEffect(() => {
+		setIsLoading(true);
+
 		const url = debouncedQuery
 			? `https://api.themoviedb.org/3/search/${contentType}?api_key=${API_KEY}&query=${debouncedQuery}&page=${page}`
 			: `https://api.themoviedb.org/3/${contentType}/popular?api_key=${API_KEY}&page=${page}`;
@@ -71,8 +81,12 @@ function App() {
 				if (data.results) {
 					setMovie(data.results);
 				}
+				setIsLoading(false);
 			})
-			.catch(err => console.error(err))
+			.catch(err => {
+				console.error(err)
+				setIsLoading(false);
+			});
 	}, [debouncedQuery, page, contentType, API_KEY]);
 
 	return (
@@ -147,20 +161,24 @@ function App() {
 						</button>
 					)}
 				</div>
+
 				<ul className="movie-list">
-					{movie.map((m) => (
-						<li
-							key={m.id}
-							className="movie-item"
-							onClick={() => setSelectedMovieId(m.id)}
-						>
-							<h3>{m.title || m.name}</h3>
-							<img
-								src={m.poster_path ? IMG_URL + m.poster_path : "https://placehold.co/200x300"}
-								alt={m.title || m.name}
-							/>
-						</li>
-					))}
+					{isLoading
+						? [...Array(12)].map((_, i) => <SkeletonCard key={i} />)
+						: movie.map((m) => (
+								<li
+									key={m.id}
+									className="movie-item"
+									onClick={() => setSelectedMovieId(m.id)}
+								>
+									<h3>{m.title || m.name}</h3>
+									<img
+										src={m.poster_path ? IMG_URL + m.poster_path : "https://placehold.co/200x300"}
+										alt={m.title || m.name}
+									/>
+								</li>
+							))
+					}
 				</ul>
 
 				<div className="pagination">
